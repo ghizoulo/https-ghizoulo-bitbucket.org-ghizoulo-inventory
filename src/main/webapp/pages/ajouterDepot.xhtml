@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+     <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+
+        <title>Oritech</title>
+		<style>
+	      #map {
+	        width: 400px;
+	        height: 450px;
+	      }
+	      #test{
+		    background-color: #86B1D6;
+		    color:#F8F8F8;
+	    </style>
+        <!-- Bootstrap Core CSS -->
+        <link href="#{request.contextPath}/ressources/assets/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+        <!-- MetisMenu CSS -->
+        <link href="#{request.contextPath}/ressources/assets/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet"/>
+        
+        <!-- DataTables CSS -->
+        <link href="#{request.contextPath}/ressources/assets/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet"/>
+        
+        <!-- DataTables Responsive CSS -->
+        <link href="#{request.contextPath}/ressources/assets/bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet"/>
+        <link href="#{request.contextPath}/ressources/assets/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet"/>
+        <link href="#{request.contextPath}/ressources/assets/bower_components/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet"/>
+        <link href="https://www.datatables.net/release-datatables/extensions/TableTools/css/dataTables.tableTools.css" rel="stylesheet"/>
+        <!-- Custom CSS -->
+        <link href="#{request.contextPath}/ressources/assets/dist/css/sb-admin-2.css" rel="stylesheet"/>
+        
+        <!-- Custom Fonts -->
+        <link href="#{request.contextPath}/ressources/assets/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+		<script src="https://maps.googleapis.com/maps/api/js"></script>
+		 <script>
+		      function initialize() {
+			    var geocoder = new google.maps.Geocoder();
+		        var mapCanvas = document.getElementById('map');
+		        var mapOptions = {
+		          center: new google.maps.LatLng(31.7948264,-7.0847231),
+		          zoom: 6,
+		          mapTypeId: google.maps.MapTypeId.ROADMAP
+		        }
+		        var map = new google.maps.Map(mapCanvas, mapOptions)
+		        google.maps.event.addListener(map, 'click', function(event) {
+	                placeMarker(event.latLng);
+	            });
+		        document.getElementById('submit').addEventListener('click', function() {
+		            geocodeAddress(geocoder, map);
+		          });
+		          
+	            var marker;
+	            //function to place the marker and get the coordinates
+	            function placeMarker(location) {
+	                if(marker){ //on vérifie si le marqueur existe
+	                    marker.setPosition(location); //on change sa position
+	                }else{
+	                    marker = new google.maps.Marker({ //on créé le marqueur
+	                        position: location, 
+	                        map: map
+	                    });
+	                }
+	                document.getElementById('formId:lat').value=location.lat();
+	                document.getElementById('formId:lng').value=location.lng();
+	                getAddress(location);
+	            }//fin de la fct placeMarker
+	            
+	            //function to get the adress of the place clicked
+	            function getAddress(latLng) {
+	                geocoder.geocode( {'latLng': latLng},
+	                  function(results, status) {
+	                    if(status == google.maps.GeocoderStatus.OK) {
+	                      if(results[0]) {
+	                        document.getElementById("formId:address").value = results[0].formatted_address;
+	                        document.getElementById("address").value = results[0].formatted_address;
+	                      }
+	                      else {
+	                        document.getElementById("formId:address").value = "No results";
+	                      }
+	                    }
+	                    else {
+	                      document.getElementById("formId:address").value = status;
+	                    }
+	                  });
+	                }//fin de la fct getAdress
+	                function geocodeAddress(geocoder, resultsMap) {
+	                	  var address = document.getElementById('address').value;
+	                	  geocoder.geocode({'address': address}, function(results, status) {
+	                	    	if (status === google.maps.GeocoderStatus.OK) {
+		                	      resultsMap.setCenter(results[0].geometry.location);
+		                	      document.getElementById('formId:lat').value=results[0].geometry.location.lat();
+		                	      document.getElementById('formId:lng').value=results[0].geometry.location.lng();
+	                	      
+		                	      	if(marker){ //on vérifie si le marqueur existe
+			      	                    marker.setPosition(results[0].geometry.location); //on change sa position
+			      	                }else{
+			      	                    marker = new google.maps.Marker({ //on créé le marqueur
+			      	                    	 map: resultsMap,
+			 	                	        position: results[0].geometry.location
+			      	                    });
+			      	                }
+	                	    } else {
+	                	      alert('L\'adresse saisie est introuvable! ' + status);
+	                	    }
+	                	  });
+	                	}
+		      }//fin de la fct initialize
+		      google.maps.event.addDomListener(window, 'load', initialize);
+	    </script>
+    </h:head>
+    <h:body>
+        <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.jsp">${loggedUser.firstName} ${loggedUser.lastName}</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-comment fa-fw"></i> New Comment
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                    <span class="pull-right text-muted small">12 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-tasks fa-fw"></i> New Task
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>See All Alerts</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-alerts -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <p:inputText type="text" styleClass="form-control" placeholder="Search#{request.contextPath}."></p:inputText>
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="../index.jsp"><i class="fa fa-fw"></i> Accueil</a>
+                        </li>
+                        <li>
+                            <a href="dashboard.xhtml"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw"></i>Dépots<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a id="test" href="depotListe.xhtml">Liste des dépots</a>
+                                </li>
+                                <li>
+                                    <a id="test" href="ajouterDepot.xhtml">Ajouter un dépot</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw"></i>Stock<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a id="test" href="stockListe.xhtml">Liste des stock</a>
+                                </li>
+                                <li>
+                                    <a id="test" href="ajouterStock.xhtml">Ajouter un stock</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw"></i>Famille de produits<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a id="test" href="familleListe.xhtml">Liste des familles</a>
+                                </li>
+                                <li>
+                                    <a id="test" href="ajouterFamille.xhtml">Ajouter une famille</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw"></i>Produits<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a id="test" href="productListe.xhtml">Liste des produits</a>
+                                </li>
+                                <li>
+                                    <a id="test" href="ajouterProduit.xhtml">Ajouter un produit</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw"></i>Alertes<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a id="test" href="alerteListe.xhtml">Liste des alertes</a>
+                                </li>
+                                <li>
+                                    <a id="test" href="ajouterAlerte.xhtml">Ajouter une alerte</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw"></i>Transaction<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a id="test" href="transactionListe.xhtml">Liste des transactions</a>
+                                </li>
+                                <li>
+                                    <a id="test" href="ajouterTransaction.xhtml">Ajouter une transaction</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12 col-md-offset-1">
+                    <h3 class="page-header">Ajouter un nouveau dépot</h3>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+            	<div class="col-md-offset-1">
+            	 <h:panelGroup id="tableDepot">
+	            	<h:form id="formId">
+	            	<div class="row">
+	            		<div class="col-xs-6">
+	            			<div class="form-group">
+		               			<p:messages id="message" showDetail="true" autoUpdate="true" closable="true" />
+		               		</div>
+		               		<div class="form-group">
+		               			<p:outputLabel for="named" value="Nom du dépot:" />
+			                  	<p:inputText id="named" value="#{depotBean.depot.nomDepot}" required="true" styleClass="form-control"/>
+			                  	<h:message class="warning" for="named" errorClass="errorMessage" id="newPassword1Error" />
+		              		</div>
+		              		<div class="form-group">
+		              			<p:outputLabel for="address" value="Adresse:" />
+		                   		<h:inputHidden  id="address" value="#{depotBean.depot.adresse}"/>
+		                   		<input id="address" type="text" placeholder="Chercher une adresse ou Sélectionner une adresse sur le map" size="40"/>
+						      	<input id="submit" type="button" class="btn btn-warning" value="Chercher"/>
+						    </div>
+		              		<div class="form-group">
+		              			<p:outputLabel for="lat" value="Latitude:" />
+		                   		<p:inputText id="lat" value="#{depotBean.depot.latitude}" styleClass="form-control"/>
+		              			<p:outputLabel for="lng" value="Longitude: " />
+		                   		<p:inputText id="lng" value="#{depotBean.depot.longitude}" styleClass="form-control"/>
+		                   		<p:inputText  id="rayon" value="5.0" rendered="false"/>
+		                   	</div>
+		                  	<div class="form-group">
+		                  		<p:outputLabel for="description" value="Description:" />
+		                   		<p:inputTextarea cols="30" rows="7" id="description" required="true" value="#{depotBean.depot.description}" styleClass="form-control"/>
+		              		</div>
+	              		</div>
+	              		<div class="col-xs-6">
+		              		<div class="form-group">
+		              			<div id="map"></div>
+		              		</div>
+	              		</div>
+	              	</div>
+	              	<div class="row">
+	              		<div class="form-group">
+		              		<p:button styleClass="btn btn-default" value="Annuler"/>
+			                <h:commandButton value="Confirmer" action="#{depotBean.addDepot}" update=":table" styleClass="btn btn-primary btn-embossed"/>
+		                </div>
+		            </div>
+	               	</h:form>
+	               	</h:panelGroup>
+              	</div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- jQuery -->
+    <script src="#{request.contextPath}/ressources/assets/bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="#{request.contextPath}/ressources/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="#{request.contextPath}/ressources/assets/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="#{request.contextPath}/ressources/assets/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+  <script src="https://www.datatables.net/release-datatables/extensions/TableTools/js/dataTables.tableTools.js"></script>
+  
+    <!-- Custom Theme JavaScript -->
+    <script src="#{request.contextPath}/ressources/assets/dist/js/sb-admin-2.js"></script>
+    </h:body>
+</html>

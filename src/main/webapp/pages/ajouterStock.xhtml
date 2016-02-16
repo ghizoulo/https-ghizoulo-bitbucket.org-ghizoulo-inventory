@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+     <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+
+        <title>Oritech</title>
+		<style type="text/css">
+		#test{
+		    background-color: #86B1D6;
+		    color:#F8F8F8;
+		} 
+		</style>
+        <!-- Bootstrap Core CSS -->
+        <link href="#{request.contextPath}/ressources/assets/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+        <!-- MetisMenu CSS -->
+        <link href="#{request.contextPath}/ressources/assets/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet"/>
+        
+        <!-- DataTables CSS -->
+        <link href="#{request.contextPath}/ressources/assets/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet"/>
+        
+        <!-- DataTables Responsive CSS -->
+        <link href="#{request.contextPath}/ressources/assets/bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet"/>
+        <link href="#{request.contextPath}/ressources/assets/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet"/>
+        <link href="#{request.contextPath}/ressources/assets/bower_components/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet"/>
+        <link href="https://www.datatables.net/release-datatables/extensions/TableTools/css/dataTables.tableTools.css" rel="stylesheet"/>
+        <!-- Custom CSS -->
+        <link href="#{request.contextPath}/ressources/assets/dist/css/sb-admin-2.css" rel="stylesheet"/>
+        
+        <!-- Custom Fonts -->
+        <link href="#{request.contextPath}/ressources/assets/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+    </h:head>
+    <h:body>
+        <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.jsp">${loggedUser.firstName} ${loggedUser.lastName}</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-comment fa-fw"></i> New Comment
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                    <span class="pull-right text-muted small">12 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-tasks fa-fw"></i> New Task
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>See All Alerts</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-alerts -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <p:inputText type="text" styleClass="form-control" placeholder="Search#{request.contextPath}."></p:inputText>
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="index.xhtml"><i class="fa fa-fw"></i> Accueil</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw"></i>Dépots<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a id="test" href="depotListe.xhtml">Liste des dépots</a>
+                                </li>
+                                <li>
+                                    <a id="test" href="ajouterDepot.xhtml">Ajouter un dépot</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw"></i>Stock<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a id="test" href="stockListe.xhtml">Liste des stock</a>
+                                </li>
+                                <li>
+                                    <a id="test" href="ajouterStock.xhtml">Ajouter un stock</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw"></i>Famille de produits<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a id="test" href="familleListe.xhtml">Liste des familles</a>
+                                </li>
+                                <li>
+                                    <a id="test" href="ajouterFamille.xhtml">Ajouter une famille</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw"></i>Produits<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a id="test" href="productListe.xhtml">Liste des produits</a>
+                                </li>
+                                <li>
+                                    <a id="test" href="ajouterProduit.xhtml">Ajouter un produit</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12 col-md-offset-1">
+                    <h3 class="page-header">Ajouter une nouveau stock</h3>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+            	<div class="col-xs-12 col-sm-6 col-md-8 col-md-offset-1">
+	            	<h:form>	   
+	            		<div class="form-group">
+		               		<p:messages id="message" showDetail="true" autoUpdate="true" closable="true" />
+		             	</div>            		
+	            		<div class="form-group">
+	               			<p:outputLabel for="names" value="Nom du stock:" />
+		                  	<h:inputText id="names" value="#{stockBean.stock.nomStock}" required="true" styleClass="form-control"/>
+		                  	<h:message class="warning" for="named" errorClass="errorMessage" id="newPassword1Error" />
+	              		</div>
+<!-- 	                  	<div class="form-group"> -->
+<!-- 	                  		<p:outputLabel for="modea" value="Mode d'alerte:" /><BR /> -->
+<!-- 	                 		<p:selectOneMenu id="modea" value="#{stockBean.stock.modeAlerte}" required="true"> -->
+<!-- 	                 		   <f:selectItem itemValue="false" itemLabel="Désactivé"/> -->
+<!-- 							   <f:selectItem itemValue="true" itemLabel="Activé" />						 -->
+<!-- 							</p:selectOneMenu> -->
+<!-- 	              		</div> -->
+	              		<div class="form-group">
+	              			<p:outputLabel for="depot" value="Sélectionnez un dépot:" /><BR />
+	                 		<h:selectOneMenu id="depot" value="#{stockBean.idDepot}" styleClass="form-control">
+				       				<f:selectItem itemValue="#{null}" itemLabel=" Sélectionnez " />
+								    <f:selectItems value="#{depotBean.listDepots}" var="depot" itemValue="#{depot.id}" itemLabel="#{depot.nomDepot}" />
+								</h:selectOneMenu>
+	              		</div>
+	              		<div class="form-group">
+			                <button type="reset" class="btn btn-default">Annuler</button>
+			                <h:commandButton value="Confirmer" action="#{stockBean.addStock}" update="" styleClass="btn btn-primary btn-embossed"/>
+		                </div>
+	               	</h:form>
+              	</div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="#{request.contextPath}/ressources/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="#{request.contextPath}/ressources/assets/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="#{request.contextPath}/ressources/assets/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+  <script src="https://www.datatables.net/release-datatables/extensions/TableTools/js/dataTables.tableTools.js"></script>
+  
+    <!-- Custom Theme JavaScript -->
+    <script src="#{request.contextPath}/ressources/assets/dist/js/sb-admin-2.js"></script>
+    </h:body>
+</html>
